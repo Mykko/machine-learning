@@ -76,6 +76,25 @@ T1 = Theta1(:, 2:end).^2;
 T2 = Theta2(:, 2:end).^2;
 J = 1.0/m * J + lambda/(2*m)*(sum(T1(:)) + sum(T2(:)));
 
+for i = 1:m 
+Y(i, y(i)) = 1; 
+end 
+
+delta3 = a3 - Y; 
+delta2 = delta3*Theta2.* (a2.*(1-a2)); 
+delta2 = delta2(:, 2: end); 
+Delta2 = zeros(size(delta3, 2), size(a2, 2)); 
+Delta1 = zeros(size(delta2, 2), size(a1, 2)); 
+for i=1:m 
+Delta2 = Delta2 + delta3(i, :).' * a2(i, :); 
+Delta1 = Delta1 + delta2(i, :).' * a1(i, :); 
+end 
+Theta1_grad = Delta1/m; 
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + Theta1(:, 2:end)*(lambda/m); 
+Theta2_grad = Delta2/m; 
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + Theta2(:, 2:end)*(lambda/m); 
+
+
 
 % -------------------------------------------------------------
 
